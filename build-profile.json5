@@ -39,7 +39,7 @@
     },
     {
       "name": "basic",
-      "srcPath": "./common/basic"
+      "srcPath": "./common/basic",
     }
   ]
 }
