@@ -1,4 +1,5 @@
 import { AdvertClass } from 'basic'
+import { window } from '@kit.ArkUI'
 
 @Entry
 @Component
@@ -19,13 +20,27 @@ struct Start {
     this.CountDown()
   }
 
+  //销毁子窗口的方法
+  closeWin() {
+    //1.查找到销毁的窗口
+    //2.进行销毁
+    window.findWindow("ad_window").destroyWindow()
+  }
+
   //倒计时的方法
   CountDown() {
+    //开启定时器
     this.timer = setInterval(() => {
+      //当倒计时为0的时候 停止倒计时
       if (this.abObj.adTime === 0) {
+        //清除定时器
         clearInterval(this.timer)
+        //销毁子窗口
+        this.closeWin()
+        //阻止代码往下执行
         return
       }
+      //倒计时减减
       this.abObj.adTime--
     }, 1000)
   }
@@ -42,14 +57,17 @@ struct Start {
         Image($r("app.media.start"))
           .objectFit(ImageFit.Cover)
 
-        Text(this.abObj.adTime + "秒后跳过")
+        Text(this.abObj.adTime == 0 ? "跳过" : this.abObj.adTime + "秒后跳过")
           .padding({ left: 10, right: 10 })
           .height(30)
-          .margin({ right: 20, top: 20 })
+          .margin({ right: 20, top: 40 })
           .fontSize(14)
           .borderRadius(15)
           .textAlign(TextAlign.Center)
           .backgroundColor($r("app.color.background_page"))
+          .onClick(() => {
+            this.closeWin()
+          })
       }
       .height("100%")
       .width("100%")
