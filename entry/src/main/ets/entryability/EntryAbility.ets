@@ -1,8 +1,23 @@
 import { AbilityConstant, UIAbility, Want } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
+import { AdvertClass,UserSettingClass } from 'basic'
 
 export default class EntryAbility extends UIAbility {
+  // async onWindowStageCreate(windowStage: window.WindowStage): Promise<voiid> {
+  //    const setting = new UserSettingClass(this.context)
+  //   const setting = new Prromise<AdvertClass>((resolve,reject) =>{
+  //     setTimeout(()=>{
+  //       resolve(defaultAd) //广告信息
+  //     },500)
+  //     //resolve
+  //   })
+  //   await settiing.setUserAd(ad)
+  //   if (ad.showAd) {
+  //
+  //   }
+  //   windowStage.loadContent('pages/Index');
+  //  }
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
   }
@@ -38,4 +53,7 @@ export default class EntryAbility extends UIAbility {
     // Ability has back to background
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');
   }
+
+
 }
+
