@@ -4,6 +4,9 @@ import { JSON } from '@kit.ArkTS'
 @Entry
 @Component
 struct Login {
+  //控制leading
+  @State showLoading: boolean = false
+  //定义登录账号密码的变量
   @State
   accountForm: AccountFormModel = {
     account: "",
@@ -22,6 +25,10 @@ struct Login {
 
   //登录方法
   submitLogin() {
+    this.showLoading = true
+    setTimeout(() => {
+      this.showLoading = false
+    }, 2000)
     AlertDialog.show({
       message: JSON.stringify(this.accountForm)
     })
@@ -75,12 +82,23 @@ struct Login {
       //密码输入框
       TextInput({ placeholder: "请输入密码", text: $$this.accountForm.password })
         .type(InputType.Password)
+        .showPasswordIcon(false)
         .loginStyle()
       //登录按钮
       Button({ type: ButtonType.Capsule }) {
-        Text("登录")
-          .fontColor($r("app.color.white"))
-
+        Row() {
+          if (this.showLoading) {
+            LoadingProgress()
+              .width(20)
+              .height(20)
+              .color($r('app.color.white'))
+              .margin({
+                right: 12
+              })
+          }
+          Text("登录")
+            .fontColor($r("app.color.white"))
+        }
       }
       .width('100%')
       .height(50)
