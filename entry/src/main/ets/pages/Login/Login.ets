@@ -1,6 +1,32 @@
+import { AccountFormModel } from '../../models'
+import { JSON } from '@kit.ArkTS'
+
 @Entry
 @Component
 struct Login {
+  @State
+  accountForm: AccountFormModel = {
+    account: "",
+    password: ""
+  }
+
+  //账号和密码空状态处理
+  getFormValidate() {
+    //如果账号和密码都不为空 则返回true
+    if (this.accountForm) {
+      return true
+    }
+    //如果为空 则返回 false
+    return false
+  }
+
+  //登录方法
+  submitLogin() {
+    AlertDialog.show({
+      message: JSON.stringify(this.accountForm)
+    })
+  }
+
   @Styles
   loginStyle(){
     .backgroundColor("#fff")
@@ -43,10 +69,11 @@ struct Login {
       .margin({ top: 50, bottom: 50 })
 
       //账号输入框
-      TextInput({ placeholder: "请输入账号" })
+      TextInput({ placeholder: "请输入账号", text: $$this.accountForm.account })
         .loginStyle()
+
       //密码输入框
-      TextInput({ placeholder: "请输入密码" })
+      TextInput({ placeholder: "请输入密码", text: $$this.accountForm.password })
         .type(InputType.Password)
         .loginStyle()
       //登录按钮
@@ -57,9 +84,13 @@ struct Login {
       }
       .width('100%')
       .height(50)
-      .backgroundColor($r('app.color.primary_disabled'))
+      .backgroundColor(this.getFormValidate() ? $r('app.color.primary') : $r('app.color.primary_disabled'))
       .margin({
         top: 50
+      })
+      .enabled(this.getFormValidate())
+      .onClick(() => {
+        this.submitLogin()
       })
 
     }
