@@ -1,32 +1,49 @@
-import { AdvertClass } from  '../models'
-import preferences from '@ohos.data.preferences'
-import { USER_SETTING, USER_SETTING_AD } from '../constants'
+//封装存储数据的方法
+import { AdvertClass } from '../models'
+import { preferences } from '@kit.ArkData'
 
 
-//默认广澳选项
-const defaultAd: AdvertClass = {
-  showAd: false,
+//封装存储数据的方法
+export const defaultAd: AdvertClass = {
+  //显示广告
+  showAd: true,
+  //广告时长
   adTime: 5,
-  adImg:  $r('app.media.start')
+  //广告图片
+  adImage: $r('app.media.start')
 }
-export  class UserSettingClass{
+
+export class UserSettingClass {
   context: Context
-  constructor(context:Context) {
+
+  //实例化UseSettingClass这个类进行触发
+  constructor(context: Context) {
+    //初始化上下文对象
     this.context = context
   }
+
   //获取存储用户信息的首选仓库
-  getStore(){
-    return preferences.getPreferences(this.context,USER_SETTING)
+  getStore() {
+    //创建仓库
+    return preferences.getPreferencesSync(this.context, {
+      name: "setting"
+    })
   }
+
   //设置用户广告设置
-  async setUserAd (ad: AdvertClass){
-    const adStore = await this.getStore()
-    await adStore.put(USER_SETTING_AD,JSON.stringify(ad))
-    await adStore.flush()
+  setUserAd(ad: AdvertClass) {
+    //获取到了创建的仓库
+    const store = this.getStore()
+    //给仓库中存储数据
+    store.putSync("setting_ad", JSON.stringify(ad))
+    //将数据写入到磁盘
+    store.flush()
+
   }
+
   //获取广告配置
-  async getUserAd ():Promise<AdvertClass>{
-    const adStore = await this.getStore()
-    return await JSON.parse(await adStore.get(USER_SETTING_AD,JSON.stringify(defaultAd)) as  string) as  AdvertClass
+  getUserAd(): AdvertClass {
+    const store = this.getStore()
+    return JSON.parse(store.getSync("setting_ad", JSON.stringify(defaultAd)) as string)
   }
 }

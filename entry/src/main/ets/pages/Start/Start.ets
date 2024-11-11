@@ -1,21 +1,20 @@
-import { AdvertClass } from 'basic'
+import { AdvertClass, UserSettingClass } from 'basic'
 import { window } from '@kit.ArkUI'
 
 @Entry
 @Component
 struct Start {
   @State
-  abObj: AdvertClass = {
-    showAd: false,
-    adTime: 5,
-    adUrl: "",
-    adImg: $r("app.media.start")
-  }
+  adObj: AdvertClass = {} as AdvertClass
   @State
   timer: number = -1
 
   //页面开始加载的时候触发当前生命周期方法
   aboutToAppear(): void {
+    //获取到本地的广告配置
+    const setting = new UserSettingClass(getContext())
+    this.adObj = setting.getUserAd()
+
     //调用倒计时方法
     this.CountDown()
   }
@@ -32,7 +31,7 @@ struct Start {
     //开启定时器
     this.timer = setInterval(() => {
       //当倒计时为0的时候 停止倒计时
-      if (this.abObj.adTime === 0) {
+      if (this.adObj.adTime === 0) {
         //清除定时器
         clearInterval(this.timer)
         //销毁子窗口
@@ -41,7 +40,7 @@ struct Start {
         return
       }
       //倒计时减减
-      this.abObj.adTime--
+      this.adObj.adTime--
     }, 1000)
   }
 
@@ -54,10 +53,10 @@ struct Start {
   build() {
     RelativeContainer() {
       Stack({ alignContent: Alignment.TopEnd }) {
-        Image($r("app.media.start"))
+        Image(this.adObj.adImage)
           .objectFit(ImageFit.Cover)
 
-        Text(this.abObj.adTime == 0 ? "跳过" : this.abObj.adTime + "秒后跳过")
+        Text(this.adObj.adTime == 0 ? "跳过" : this.adObj.adTime + "秒后跳过")
           .padding({ left: 10, right: 10 })
           .height(30)
           .margin({ right: 20, top: 40 })
