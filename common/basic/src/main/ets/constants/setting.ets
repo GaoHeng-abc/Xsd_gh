@@ -1,2 +1,5 @@
-export const USER_SETTING = 'fast_driver_setting' // 用来存储用户设置的首选项的key
-export const USER_SETTING_AD = 'fast_driver_setting_ad' // 用来存储用户设置广告首选项的key
+// 定义仓库名
+export const XSD_SETTING = 'setting'
+
+// 定义的存储的数据key值(广告配置)
+export const XSD_SETTING_AD = 'setting_ad'
