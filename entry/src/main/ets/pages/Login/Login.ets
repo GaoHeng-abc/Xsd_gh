@@ -82,7 +82,6 @@ struct Login {
       //密码输入框
       TextInput({ placeholder: "请输入密码", text: $$this.accountForm.password })
         .type(InputType.Password)
-        .showPasswordIcon(false)
         .loginStyle()
       //登录按钮
       Button({ type: ButtonType.Capsule }) {
