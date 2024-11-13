@@ -17,31 +17,33 @@ service.interceptors.request.use((config: InternalAxiosRequestConfig) => {
 
 //创建响应拦截器
 service.interceptors.response.use((response: AxiosResponse) => {
-  return response;
+  if (response.status === 200 && response.data.code === 200) {
+    return response.data.data;
+  }
 }, (error: AxiosError) => {
   return Promise.reject(error);
 });
 
 
 //创建自定义的请求方法
-export class Http {
-  get<T>(url: string, params?: object) {
+class Http {
+  static get<T>(url: string, params?: object) {
     return service.get <null, T>(url, { params })
   }
 
-  post<T>(url: string, data?: object) {
+  static post<T>(url: string, data?: object) {
     return service.post<null, T>(url, data)
   }
 
-  put<T>(url: string, data?: object) {
+  static put<T>(url: string, data?: object) {
     return service.put<null, T>(url, data)
   }
 
-  delete<T>(url: string, data?: object) {
+  static delete<T>(url: string, data?: object) {
     return service.delete(url,)
   }
 }
 
 
 //
-export { }
+export { Http }

@@ -1,5 +1,7 @@
+import { loginApi } from '../../api'
 import { AccountFormModel } from '../../models'
 import { JSON } from '@kit.ArkTS'
+import { router } from '@kit.ArkUI'
 
 @Entry
 @Component
@@ -24,14 +26,29 @@ struct Login {
   }
 
   //登录方法
-  submitLogin() {
+  async submitLogin() {
+    //显示loading
     this.showLoading = true
-    setTimeout(() => {
+    try {
+      const res = await loginApi(this.accountForm)
+      AlertDialog.show({
+        message: JSON.stringify(res)
+      })
+      // TODO: 将token存储到板本地
+
+      // TODO: 登录成功后跳转页面
+      router.pushUrl({
+        url: "/pages/Index"
+      })
+    } catch (e) {
+      AlertDialog.show({
+        message: JSON.stringify(e)
+      })
+      console.log("error", e)
+    } finally {
+      //关闭loading
       this.showLoading = false
-    }, 2000)
-    AlertDialog.show({
-      message: JSON.stringify(this.accountForm)
-    })
+    }
   }
 
   @Styles
