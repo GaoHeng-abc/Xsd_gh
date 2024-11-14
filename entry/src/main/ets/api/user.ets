@@ -3,7 +3,7 @@ import { AccountFormModel } from '../models'
 
 
 export const loginApi = (data: AccountFormModel): Promise<string> => {
-  return Http.post<string>("/login/account", data,)
+  return Http.post<string>("/driver/login/account", data)
 }
 
 //获取用户信息登录接口

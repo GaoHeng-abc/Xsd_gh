@@ -2,6 +2,7 @@ import { loginApi } from '../../api'
 import { AccountFormModel } from '../../models'
 import { JSON } from '@kit.ArkTS'
 import { router } from '@kit.ArkUI'
+import { UserSettingClass } from 'basic/src/main/ets/utils/setting'
 
 @Entry
 @Component
@@ -31,14 +32,12 @@ struct Login {
     this.showLoading = true
     try {
       const res = await loginApi(this.accountForm)
-      AlertDialog.show({
-        message: JSON.stringify(res)
-      })
       // TODO: 将token存储到板本地
-
+      const setting = new UserSettingClass(getContext())
+      setting.setUserToken(res)
       // TODO: 登录成功后跳转页面
       router.pushUrl({
-        url: "/pages/Index"
+        url: "pages/Index"
       })
     } catch (e) {
       AlertDialog.show({

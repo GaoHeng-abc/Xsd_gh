@@ -1,10 +1,13 @@
 //引入axios
 import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from '@ohos/axios';
+import { promptAction } from '@kit.ArkUI';
+import { BASE_URL } from '../constants';
+
 
 //创建axios实例对象
 const service = axios.create({
-  baseURL: "BASE_URL",
-  timeout: 1000
+  baseURL: BASE_URL,
+  timeout: 10000
 })
 
 //创建请求拦截器
@@ -19,6 +22,10 @@ service.interceptors.request.use((config: InternalAxiosRequestConfig) => {
 service.interceptors.response.use((response: AxiosResponse) => {
   if (response.status === 200 && response.data.code === 200) {
     return response.data.data;
+  } else {
+    promptAction.showToast({
+      message: "123"
+    })
   }
 }, (error: AxiosError) => {
   return Promise.reject(error);
@@ -40,7 +47,7 @@ class Http {
   }
 
   static delete<T>(url: string, data?: object) {
-    return service.delete(url,)
+    return service.delete(url,data)
   }
 }
 

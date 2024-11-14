@@ -1,7 +1,7 @@
 //封装存储数据的方法
 import { AdvertClass } from '../models'
 import { preferences } from '@kit.ArkData'
-import { XSD_SETTING, XSD_SETTING_AD } from '../constants'
+import { TOKEN_KEY, XSD_SETTING, XSD_SETTING_AD } from '../constants'
 
 
 //封装存储数据的方法
@@ -47,5 +47,22 @@ export class UserSettingClass {
   getUserAd(): AdvertClass {
     const store = this.getStore()
     return JSON.parse(store.getSync(XSD_SETTING_AD, JSON.stringify(defaultAd)) as string)
+  }
+
+
+  //存储token的数据
+  setUserToken(token: string) {
+    //获取仓库
+    const store = this.getStore()
+    store.putSync(TOKEN_KEY, token)
+    //写入到磁盘
+    store.flush()
+  }
+
+  //获取存储的token数据
+  getUserToken(): string {
+    //获取仓库
+    const store = this.getStore()
+    return store.getSync(TOKEN_KEY, "") as string
   }
 }
